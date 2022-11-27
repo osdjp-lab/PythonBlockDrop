@@ -13,109 +13,110 @@ top_left_y = window_height - 600
 # defining blocks
 
 block1 = [['.....',
-      '.....',
-      '..00.',
-      '.00..',
-      '.....'],
-     ['.....',
-      '..0..',
-      '..00.',
-      '...0.',
-      '.....']]
+           '.....',
+           '..00.',
+           '.00..',
+           '.....'],
+          ['.....',
+           '..0..',
+           '..00.',
+           '...0.',
+           '.....']]
 
 block2 = [['.....',
-      '.....',
-      '.00..',
-      '..00.',
-      '.....'],
-     ['.....',
-      '..0..',
-      '.00..',
-      '.0...',
-      '.....']]
+           '.....',
+           '.00..',
+           '..00.',
+           '.....'],
+          ['.....',
+           '..0..',
+           '.00..',
+           '.0...',
+           '.....']]
 
 block3 = [['..0..',
-      '..0..',
-      '..0..',
-      '..0..',
-      '.....'],
-     ['.....',
-      '0000.',
-      '.....',
-      '.....',
-      '.....']]
+           '..0..',
+           '..0..',
+           '..0..',
+           '.....'],
+          ['.....',
+           '0000.',
+           '.....',
+           '.....',
+           '.....']]
 
 block4 = [['.....',
-      '.....',
-      '.00..',
-      '.00..',
-      '.....']]
+           '.....',
+           '.00..',
+           '.00..',
+           '.....']]
 
 block5 = [['.....',
-      '.0...',
-      '.000.',
-      '.....',
-      '.....'],
-     ['.....',
-      '..00.',
-      '..0..',
-      '..0..',
-      '.....'],
-     ['.....',
-      '.....',
-      '.000.',
-      '...0.',
-      '.....'],
-     ['.....',
-      '..0..',
-      '..0..',
-      '.00..',
-      '.....']]
+           '.0...',
+           '.000.',
+           '.....',
+           '.....'],
+          ['.....',
+           '..00.',
+           '..0..',
+           '..0..',
+           '.....'],
+          ['.....',
+           '.....',
+           '.000.',
+           '...0.',
+           '.....'],
+          ['.....',
+           '..0..',
+           '..0..',
+           '.00..',
+           '.....']]
 
 block6 = [['.....',
-      '...0.',
-      '.000.',
-      '.....',
-      '.....'],
-     ['.....',
-      '..0..',
-      '..0..',
-      '..00.',
-      '.....'],
-     ['.....',
-      '.....',
-      '.000.',
-      '.0...',
-      '.....'],
-     ['.....',
-      '.00..',
-      '..0..',
-      '..0..',
-      '.....']]
+           '...0.',
+           '.000.',
+           '.....',
+           '.....'],
+          ['.....',
+           '..0..',
+           '..0..',
+           '..00.',
+           '.....'],
+          ['.....',
+           '.....',
+           '.000.',
+           '.0...',
+           '.....'],
+          ['.....',
+           '.00..',
+           '..0..',
+           '..0..',
+           '.....']]
 
 block7 = [['.....',
-      '..0..',
-      '.000.',
-      '.....',
-      '.....'],
-     ['.....',
-      '..0..',
-      '..00.',
-      '..0..',
-      '.....'],
-     ['.....',
-      '.....',
-      '.000.',
-      '..0..',
-      '.....'],
-     ['.....',
-      '..0..',
-      '.00..',
-      '..0..',
-      '.....']]
+           '..0..',
+           '.000.',
+           '.....',
+           '.....'],
+          ['.....',
+           '..0..',
+           '..00.',
+           '..0..',
+           '.....'],
+          ['.....',
+           '.....',
+           '.000.',
+           '..0..',
+           '.....'],
+          ['.....',
+           '..0..',
+           '.00..',
+           '..0..',
+           '.....']]
 
-blocks = [block1, block2,block3, block4, block5, block6, block7]
-block_colors = [(255, 165, 0), (128, 0, 128), (255, 255, 0), (0, 0, 255), (0, 255, 0), (255, 0, 0), (0, 255, 255)]
+blocks = [block1, block2, block3, block4, block5, block6, block7]
+block_colors = [(255, 165, 0), (128, 0, 128), (255, 255, 0),
+                (0, 0, 255), (0, 255, 0), (255, 0, 0), (0, 255, 255)]
 
 
 def game_grid(pos={}):
@@ -164,7 +165,8 @@ def get_pos(block):
 
 
 def valid_space(block, grid):
-    valid_pos = [[(j, i) for j in range(10) if grid[i][j] == (0, 0, 0)] for i in range(20)]
+    valid_pos = [[(j, i) for j in range(10) if grid[i][j] == (0, 0, 0)]
+                 for i in range(20)]
     valid_pos = [j for sub in valid_pos for j in sub]
     block_pos = get_pos(block)
 
@@ -180,7 +182,7 @@ def draw_window(surface):
 
     Args:
         surface (pygame.Surface): Display surface.
-    
+
     """
     surface_color = pygame.colordict.THECOLORS.get("black")
     surface.fill(surface_color)
@@ -200,7 +202,8 @@ def draw_window(surface):
                              (top_left_x + j * 30, top_left_y + 600))  # vertical lines
 
     # draw grid boundary
-    pygame.draw.rect(surface, (255, 0, 0), (top_left_x,top_left_y, 300, 600), 5)
+    pygame.draw.rect(surface, (255, 0, 0),
+                     (top_left_x, top_left_y, 300, 600), 5)
 
 
 def clear_bottom_rows(grid, locked):
@@ -233,7 +236,7 @@ def play():
     next_block = False
     # Positions taken by blocks
     positions = {}
-    # minimum time interval between block drop by one 
+    # minimum time interval between block drop by one
     fall_time_interval = 300
     # time measurement between loop cycles
     clock = pygame.time.Clock()
@@ -287,6 +290,7 @@ def play():
 
         pygame.display.update()
 
+
 def main():
     """The main function of the PythonBlockDrop game."""
     pygame.font.init()
@@ -301,6 +305,7 @@ def main():
 
             # if event.type == pygame.KEYDOWN:
             play()
+
 
 window = pygame.display.set_mode((window_width, window_height))
 grid = []
