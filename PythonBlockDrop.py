@@ -142,6 +142,7 @@ class Block(object):
 
 
 def get_block():
+    """Return random block."""
     global blocks, block_colors
     return Block(5, 0, random.choice(blocks))
 
@@ -184,34 +185,71 @@ def draw_window(surface):
     surface_color = pygame.colordict.THECOLORS.get("black")
     surface.fill(surface_color)
 
+    # draw blocks
     for i in range(len(grid)):
         for j in range(len(grid[i])):
             pygame.draw.rect(
                 surface, grid[i][j], (top_left_x + j * 30, top_left_y + i * 30, 30, 30), 0)
 
+    # draw grid
     for i in range(20):
         pygame.draw.line(surface, (128, 128, 128), (top_left_x, top_left_y + i*30),
                          (top_left_x + 300, top_left_y + i * 30))  # horizontal lines
         for j in range(10):
             pygame.draw.line(surface, (128, 128, 128), (top_left_x + j * 30, top_left_y),
                              (top_left_x + j * 30, top_left_y + 600))  # vertical lines
+
+    # draw grid boundary
     pygame.draw.rect(surface, (255, 0, 0), (top_left_x,top_left_y, 300, 600), 5)
 
 
+def clear_bottom_rows(grid, locked):
+    """Clear bottom filled rows."""
+    inc = 0
+    for i in range(len(grid)-1, -1, -1):
+        row = grid[i]
+        if (0, 0, 0) not in row:
+            inc += 1
+            ind = i
+            for j in range(len(row)):
+                try:
+                    del locked[(j, i)]
+                except:
+                    continue
+    if inc > 0:
+        for key in sorted(list(locked), key=lambda x: x[1])[::-1]:
+            x, y = key
+            if y < ind:
+                newKey = (x, y + inc)
+                locked[newKey] = locked.pop(key)
+
+
 def play():
-    global grid
+    # loop control variable
     run = True
+    # generated block
     block = get_block()
+    # Control variable for generating next block
     next_block = False
+    # Positions taken by blocks
     positions = {}
+    # minimum time interval between block drop by one 
+    fall_time_interval = 300
+    # time measurement between loop cycles
+    clock = pygame.time.Clock()
+    fall_time = 0
 
     while run:
         grid = game_grid(positions)
-        if block.y > 0:
-            block.y -= 1
-            next_block = True
+        fall_time += clock.get_rawtime()
+        clock.tick()
 
-        block.y += 1
+        if fall_time >= fall_time_interval:
+            fall_time = 0
+            block.y += 1
+            if not (valid_space(block, grid)) and block.y > 0:
+                block.y -= 1
+                next_block = True
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -245,6 +283,7 @@ def play():
                 positions[p] = block.color
             block = get_block()
             next_block = False
+        draw_window(window)
 
         pygame.display.update()
 
@@ -260,12 +299,11 @@ def main():
                 pygame.display.quit()
                 quit()
 
-            if event.type == pygame.KEYDOWN:
-                main()
+            # if event.type == pygame.KEYDOWN:
+            play()
 
 window = pygame.display.set_mode((window_width, window_height))
-draw_window(window)
-
+grid = []
 
 if __name__ == "__main__":
     main()
