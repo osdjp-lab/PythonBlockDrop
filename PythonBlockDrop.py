@@ -177,6 +177,12 @@ def valid_space(block, grid):
     return True
 
 
+def draw_text(text, size, color, surface, position):
+    font = pygame.font.SysFont('comicsans', size, bold=True)
+    label = font.render(text, 1, color)
+    surface.blit(label, (position[0] - (label.get_width() / 2), position[1] - label.get_height()/2))
+
+
 def draw_window(surface):
     """Draw the game window.
 
@@ -295,6 +301,9 @@ def main():
     """The main function of the PythonBlockDrop game."""
     pygame.font.init()
     pygame.display.set_caption('Tetris')
+    position = (top_left_x + 150, top_left_y + 300)
+    draw_text('Press any key to begin.', 60, (255, 255, 255), window, position)
+    pygame.display.update()
     run = True
     while run:
         for event in pygame.event.get():
@@ -303,8 +312,8 @@ def main():
                 pygame.display.quit()
                 quit()
 
-            # if event.type == pygame.KEYDOWN:
-            play()
+            if event.type == pygame.KEYDOWN:
+                play()
 
 
 window = pygame.display.set_mode((window_width, window_height))
