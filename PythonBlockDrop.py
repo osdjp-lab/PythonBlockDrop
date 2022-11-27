@@ -277,6 +277,11 @@ def play():
                     block.x += 1
                     # if not valid_space(block, grid):
                     #     block.x -= 1
+                elif event.key == pygame.K_UP:
+                    # rotate block
+                    block.rotation = block.rotation + 1 % len(block.block)
+                    if not valid_space(block, grid):
+                        block.rotation = block.rotation - 1 % len(block.block)
 
         block_pos = get_pos(block)
 
