@@ -212,8 +212,8 @@ def draw_window(surface):
                      (top_left_x, top_left_y, 300, 600), 5)
 
 
-def clear_bottom_rows(grid, locked):
-    """Clear bottom filled rows."""
+def clear_any_filled_rows(grid, locked):
+    """Clear any filled rows."""
     inc = 0
     for i in range(len(grid)-1, -1, -1):
         row = grid[i]
