@@ -184,12 +184,7 @@ def draw_text(text, size, color, surface, position):
 
 
 def draw_window(surface):
-    """Draw the game window.
 
-    Args:
-        surface (pygame.Surface): Display surface.
-
-    """
     surface_color = pygame.colordict.THECOLORS.get("black")
     surface.fill(surface_color)
 
