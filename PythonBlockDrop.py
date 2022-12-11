@@ -229,6 +229,7 @@ def clear_any_filled_rows(grid, locked):
 
 
 def play():
+    global grid
     # loop control variable
     run = True
     # generated block
@@ -261,17 +262,16 @@ def play():
                 pygame.display.quit()
                 quit()
 
-            block.y -= 1
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     block.x -= 1
-                    # if not valid_space(block, grid):
-                    #     block.x += 1
+                    if not valid_space(block, grid):
+                        block.x += 1
 
                 elif event.key == pygame.K_RIGHT:
                     block.x += 1
-                    # if not valid_space(block, grid):
-                    #     block.x -= 1
+                    if not valid_space(block, grid):
+                        block.x -= 1
                 elif event.key == pygame.K_UP:
                     # rotate block
                     block.rotation = block.rotation + 1 % len(block.block)
@@ -292,8 +292,9 @@ def play():
                 positions[p] = block.color
             block = get_block()
             next_block = False
-        draw_window(window)
+            clear_any_filled_rows(grid, positions)
 
+        draw_window(window)
         pygame.display.update()
 
 
