@@ -15,7 +15,8 @@ TOP_LEFT_Y = WINDOW_HEIGHT - BOARD_HEIGHT
 
 
 class Block:
-    """Representation of a single tetris block.
+    """
+    Representation of a single tetris block.
     
     Attributes:
         B1...B7 (list of lists of strings): Absolute definitions of each kind
@@ -147,7 +148,8 @@ class Block:
         self.rotation = 0
 
     def get_relative_positions(self):
-        """Convert absolute block definition to position relative block
+        """
+        Convert absolute block definition to position relative block
         definition.
         
         Returns:
@@ -172,13 +174,15 @@ class Block:
 
 
 class Board:
-    """Representation of the game board.
+    """
+    Representation of the game board.
     
     Attributes:
         grid (list of lists of 3 element tuples): The board.
         filled_positions (dictionary): Positions taken by blocks and their associated color.
         next_block (boolean): Flag indicating whether to switch to next block.
         current_block (Block): Block currently in motion.
+        nr_blocks (int): Number of blocks spawned.
     
     """
 
@@ -187,6 +191,7 @@ class Board:
         self.filled_positions = {}
         self.next_block = False
         self.current_block = Block()
+        self.nr_blocks = 1
 
     def zero_out_grid(self):
         """Assign zero tuples to all positions."""
@@ -287,7 +292,8 @@ class Board:
                 self.grid[y][x] = self.current_block.color
 
     def end_current_block_motion(self):
-        """Shift focus to next block.
+        """
+        Shift focus to next block.
         
         Add positions taken by current_block to filled_positions.
         Regenerate current_block.
@@ -299,12 +305,14 @@ class Board:
                 p = (pos[0], pos[1])
                 self.filled_positions[p] = self.current_block.color
             self.current_block = Block()
+            self.nr_blocks += 1
             self.next_block = False
             self.clear_any_filled_rows()
 
 
 class BoardView:
-    """Visualization of Board.
+    """
+    Visualization of Board.
 
     Args:
         surface (pygame.Surface): Display surface.
@@ -321,7 +329,8 @@ class BoardView:
         self.board = board
 
     def draw_text(self, text, size, color, position):
-        """Draw text of specified size and color onto surface.
+        """
+        Draw text of specified size and color onto surface.
         
         Args:
             text (string): String to be displayed.
@@ -335,7 +344,8 @@ class BoardView:
         self.surface.blit(label, (position[0] - (label.get_width() / 2), position[1] - label.get_height() / 2))
 
     def draw_grid(self, row, col):
-        """Draw grid onto surface.
+        """
+        Draw grid onto surface.
         
         Args:
             row (int): Number of rows.
