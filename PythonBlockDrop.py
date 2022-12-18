@@ -246,6 +246,20 @@ class Board:
                     newKey = (x, y + inc)
                     self.filled_positions[newKey] = self.filled_positions.pop(key)
 
+    def is_game_over(self):
+         """Check if game over condition has been met.
+         
+         Returns:
+             True if game is over.
+             False if game is not over.
+         
+         """
+         for pos in self.filled_positions:
+             x, y = pos
+             if y < 1:
+                 return True
+         return False
+
     def block_motion(self, fall_time):
         """Move current_block downwards at a predefined rate.
         
@@ -386,6 +400,10 @@ class PythonBlockDrop:
                     self.board.current_block.rotation = self.board.current_block.rotation + 1 % len(self.board.current_block.piece)
                     if not self.board.is_valid():
                         self.board.current_block.rotation = self.board.current_block.rotation - 1 % len(self.board.current_block.piece)
+                elif event.key == pygame.K_DOWN:
+                    self.board.current_block.y += 2
+                    if not self.board.is_valid():
+                        self.board.current_block.y -= 2
         return run
 
     def game_loop(self):
@@ -397,6 +415,7 @@ class PythonBlockDrop:
         while run:
             fall_time += clock.get_rawtime()
             clock.tick()
+
 
             # schedule changes by shifting them to grid
 
@@ -410,6 +429,14 @@ class PythonBlockDrop:
 
             self.boardview.draw_window()
             pygame.display.update()
+            run = not self.board.is_game_over()
+        text_position = (TOP_LEFT_X + BOARD_WIDTH / 2,
+                        TOP_LEFT_Y + BOARD_HEIGHT / 2)
+        self.boardview.draw_text("You Lost", 40, (255,255,255), text_position)
+        pygame.display.update()
+        pygame.time.delay(2000)
+        pygame.quit()
+            
 
     def menu_loop(self):
         """PythonBlockDrop menu loop."""
@@ -420,11 +447,19 @@ class PythonBlockDrop:
                              TOP_LEFT_Y + BOARD_HEIGHT / 2)
             self.boardview.draw_text('Press any key to begin.', 60, (255, 255, 255), text_position)
             pygame.display.update()
+            
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
                 if event.type == pygame.KEYDOWN:
                     self.game_loop()
+
+        pygame.display.update()
+        pygame.time.delay(2000)
+
+                
+            
         pygame.quit()
 
 if __name__ == "__main__":
