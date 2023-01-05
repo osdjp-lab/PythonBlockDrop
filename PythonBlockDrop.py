@@ -15,8 +15,7 @@ TOP_LEFT_Y = WINDOW_HEIGHT - BOARD_HEIGHT
 
 
 class Block:
-    """
-    Representation of a single tetris block.
+    """Representation of a single tetris block.
     
     Attributes:
         B1...B7 (list of lists of strings): Absolute definitions of each kind
@@ -148,8 +147,7 @@ class Block:
         self.rotation = 0
 
     def get_relative_positions(self):
-        """
-        Convert absolute block definition to position relative block
+        """Convert absolute block definition to position relative block
         definition.
         
         Returns:
@@ -174,8 +172,7 @@ class Block:
 
 
 class Board:
-    """
-    Representation of the game board.
+    """Representation of the game board.
     
     Attributes:
         grid (list of lists of 3 element tuples): The board.
@@ -292,8 +289,7 @@ class Board:
                 self.grid[y][x] = self.current_block.color
 
     def end_current_block_motion(self):
-        """
-        Shift focus to next block.
+        """Shift focus to next block.
         
         Add positions taken by current_block to filled_positions.
         Regenerate current_block.
@@ -311,8 +307,7 @@ class Board:
 
 
 class BoardView:
-    """
-    Visualization of Board.
+    """Visualization of Board.
 
     Args:
         surface (pygame.Surface): Display surface.
@@ -329,8 +324,7 @@ class BoardView:
         self.board = board
 
     def draw_text(self, text, size, color, position):
-        """
-        Draw text of specified size and color onto surface.
+        """Draw text of specified size and color onto surface.
         
         Args:
             text (string): String to be displayed.
@@ -344,8 +338,7 @@ class BoardView:
         self.surface.blit(label, (position[0] - (label.get_width() / 2), position[1] - label.get_height() / 2))
 
     def draw_grid(self, row, col):
-        """
-        Draw grid onto surface.
+        """Draw grid onto surface.
         
         Args:
             row (int): Number of rows.
@@ -426,7 +419,6 @@ class PythonBlockDrop:
             fall_time += clock.get_rawtime()
             clock.tick()
 
-
             # schedule changes by shifting them to grid
 
             self.board.recreate_grid()
@@ -440,14 +432,34 @@ class PythonBlockDrop:
             self.boardview.draw_window()
             pygame.display.update()
             run = not self.board.is_game_over()
-        text_position = (TOP_LEFT_X + BOARD_WIDTH / 2,
-                        TOP_LEFT_Y + BOARD_HEIGHT / 2)
-        self.boardview.draw_text("You Lost", 40, (255,255,255), text_position)
-        pygame.display.update()
-        pygame.time.delay(2000)
+        self.game_over_loop()
+
+    def game_over_loop(self):
+        """ PythonBlockDrop game over loop."""
+        run = True
+        while run:
+            self.surface.fill((0,0,0))
+            text_position = (TOP_LEFT_X + BOARD_WIDTH / 2,
+                             TOP_LEFT_Y + BOARD_HEIGHT / 8)
+            self.boardview.draw_text("Game Over", 60, (255,255,255), text_position)
+            text_position = (TOP_LEFT_X + BOARD_WIDTH / 2,
+                             TOP_LEFT_Y + 3 * BOARD_HEIGHT / 8)
+            self.boardview.draw_text('Your score is:', 40, (255, 255, 255), text_position)
+            text_position = (TOP_LEFT_X + BOARD_WIDTH / 2,
+                             TOP_LEFT_Y + BOARD_HEIGHT / 2)
+            self.boardview.draw_text(str(self.board.nr_blocks)+" blocks", 40, (255, 255, 255), text_position)
+            text_position = (TOP_LEFT_X + BOARD_WIDTH / 2,
+                             TOP_LEFT_Y + 6 * BOARD_HEIGHT / 8)
+            self.boardview.draw_text("Press any key to quit.", 50, (255, 255, 255), text_position)
+            pygame.display.update()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                if event.type == pygame.KEYDOWN:
+                    run = False
         pygame.quit()
             
-
     def menu_loop(self):
         """PythonBlockDrop menu loop."""
         run = True
@@ -458,19 +470,14 @@ class PythonBlockDrop:
             self.boardview.draw_text('Press any key to begin.', 60, (255, 255, 255), text_position)
             pygame.display.update()
             
-            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
                 if event.type == pygame.KEYDOWN:
                     self.game_loop()
-
-        pygame.display.update()
-        pygame.time.delay(2000)
-
-                
-            
+                    run = False
         pygame.quit()
+
 
 if __name__ == "__main__":
     PythonBlockDrop()
