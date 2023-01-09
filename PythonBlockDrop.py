@@ -4,7 +4,7 @@ import random
 # Global constants
 
 WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 700
+WINDOW_HEIGHT = 600
 BOARD_WIDTH = 300
 BOARD_HEIGHT = 600
 FIELD_WIDTH = 30
@@ -333,7 +333,7 @@ class BoardView:
             position (tuple): Coordinates at which to place label.
         
         """
-        font = pygame.font.SysFont('comicsans', size, bold=True)
+        font = pygame.font.SysFont('arial', size, bold=True)
         label = font.render(text, 1, color)
         self.surface.blit(label, (position[0] - (label.get_width() / 2), position[1] - label.get_height() / 2))
 
@@ -349,10 +349,10 @@ class BoardView:
         sy = TOP_LEFT_Y
         for i in range(row):
             pygame.draw.line(self.surface, (128,128,128), (sx, sy + i*30), (sx + BOARD_WIDTH, sy + i * 30))  # horizontal lines
-            for j in range(col):
+            for j in range(col+1):
                 pygame.draw.line(self.surface, (128,128,128), (sx + j * 30, sy), (sx + j * 30, sy + BOARD_HEIGHT))  # vertical lines
 
-    def draw_window(self):
+    def draw_window(self): 
         """Draw window and contents."""
         surface_color = pygame.colordict.THECOLORS.get("black")
         self.surface.fill(surface_color)
@@ -363,8 +363,6 @@ class BoardView:
 
         self.draw_grid(20, 10)
 
-        pygame.draw.rect(self.surface, (255, 0, 0), (TOP_LEFT_X, TOP_LEFT_Y, BOARD_WIDTH, BOARD_HEIGHT), 5)
-
 
 class PythonBlockDrop:
     """Tetris game."""
@@ -373,6 +371,8 @@ class PythonBlockDrop:
         pygame.font.init()
         self.surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption('Tetris')
+        icon = pygame.image.load('icon.png')
+        pygame.display.set_icon(icon)
         self.board = Board()
         self.boardview = BoardView(self.surface, self.board)
         self.menu_loop()
