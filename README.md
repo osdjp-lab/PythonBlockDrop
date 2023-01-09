@@ -7,8 +7,8 @@ To start game run PythonBlockDrop.py file.
 # HOW TO PLAY
 
 Play game with keyboard. Follow instructions written on game window.
-To move bricks use arrows from keyboard:
-up arrow - brick rotation,
+To move blocks use arrows from keyboard:
+up arrow - block rotation,
 down arrow - speed up,
-left arrow - move brick to left,
-right arrow - move brick to right.
+left arrow - move block to left,
+right arrow - move block to right.
